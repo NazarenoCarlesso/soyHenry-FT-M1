@@ -42,10 +42,11 @@ var countArray = function(array) {
 
 var countProps = function(obj) {
     // Tu código aca:
-    let props = 0;
+    let props = 0; // contador de propiedades
     for (const key in obj) {
-        if (Array.isArray(obj[key])) props++;
-        typeof obj[key] === 'object' ? props += countProps(obj[key]) : props++;
+        props++; // aumenta el contador
+        // si es un objecto pero no un array, mira los anidados
+        if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) props += countProps(obj[key]);
     }
     return props;
 }
@@ -60,15 +61,15 @@ var countProps = function(obj) {
 
 LinkedList.prototype.changeNotNumbers = function(){
     // Tu código aca:
-    let counter = 0;
-    let pointer = this.head;
-    while(pointer){
-        let num = Number(pointer.value);
-        if (!num && num !== 0) {
-            pointer.value = 'Kiricocho';
-            counter++;
+    let counter = 0; // contador
+    let pointer = this.head; // puntero para recorrer la lista
+    while (pointer) { // mientras el nodo no sea null
+        let num = Number(pointer.value); // castea en numero
+        if (!num && num !== 0) { // si el numero es falsy y distinto de 0
+            pointer.value = 'Kiricocho'; // reemplaza
+            counter++; // aumenta el contador
         }
-        pointer = pointer.next;
+        pointer = pointer.next; // pasa al siguiente nodo
     }
     return counter;
 }
@@ -83,25 +84,13 @@ LinkedList.prototype.changeNotNumbers = function(){
 
 var mergeQueues = function(queueOne, queueTwo) {
     // Tu código aca:
-    /* RESUELTO CON ARREGLOS
-    let arrayOne = queueOne.array;
-    let arrayTwo = queueTwo.array;
-    //console.log(`arrayOne: ${arrayOne}, arrayTwo: ${arrayTwo}`);
-    let key = 1;
-    for (let i = 0; i < arrayTwo.length; i++) {
-        arrayOne.splice(key, 0, arrayTwo[i]);
-        key += 2;
-        //console.log(`i: ${i}, arrayOne: ${arrayOne}`);
-    }
-    let newQueue = new Queue;
-    for (let j = 0; j < arrayOne.length; j++) {
-        newQueue.enqueue(arrayOne[j]);
-    }
-    return newQueue;
-    */
-   // let newQueue = new Queue;
-   console.log(`queueOne: ${queueOne.array}, queueTwo: ${queueTwo.array}`);
-   console.log(`dequeueOne: ${queueOne.dequeue()}`);
+   // console.log(`queueOne: ${queueOne.array}, queueTwo: ${queueTwo.array}`);
+   let newQueue = new Queue;
+   while (queueOne.size() || queueOne.size()) { // si alguna de las filas tiene valores
+    if (queueOne.size()) newQueue.enqueue(queueOne.dequeue()); // si fila uno tiene valor, sacalo y guardalo
+    if (queueTwo.size()) newQueue.enqueue(queueTwo.dequeue()); // si fila dos tiene valor, sacalo y guardalo
+   }
+   return newQueue; // fila nueva
 }
 
 // Implementar la funcion closureMult que permita generar nuevas funciones que representen
@@ -115,14 +104,23 @@ var mergeQueues = function(queueOne, queueTwo) {
 
 var closureMult = function(multiplier) {
     // Tu código aca:
-
+    return function (x) { // closure debe devolver una funcion
+        return x * multiplier; // x es argumento, multiplier se inicializa cuando se crea la funcion
+    }
 }
 
 // Implementar el método sum dentro del prototype de BinarySearchTree
 // que debe retornar la suma total de los valores dentro de cada nodo del arbol
 BinarySearchTree.prototype.sum = function() {
     // Tu código aca:
-
+    // TIENE DOS HOJAS
+    if (this.left && this.right) return this.value + this.left.sum() + this.right.sum();
+    // TIENE HOJA IZQ
+    if (this.left) return this.value + this.left.sum();
+    // TIENE HOJA DER
+    if (this.right) return this.value + this.right.sum();
+    // NO TIENE HOJAS
+    return this.value;
 }
 
 module.exports = {
