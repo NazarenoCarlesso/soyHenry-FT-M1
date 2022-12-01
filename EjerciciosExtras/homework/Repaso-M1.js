@@ -16,9 +16,12 @@ const {
 
 var countArray = function(array) {
     // Tu código aca:
-    
+    let sum = 0;
+    array.forEach(element => {
+        Array.isArray(element) ? sum += countArray(element) : sum += element;
+    });
+    return sum;
 }
-
 
 // Implementar la función countProps: a partir de un objeto en el cual cada propiedad puede contener
 // cualquier tipo de dato, determinar la cantidad de propiedades de objetos en cualquier nivel, ya sea el inicial
@@ -39,9 +42,13 @@ var countArray = function(array) {
 
 var countProps = function(obj) {
     // Tu código aca:
-
+    let props = 0;
+    for (const key in obj) {
+        if (Array.isArray(obj[key])) props++;
+        typeof obj[key] === 'object' ? props += countProps(obj[key]) : props++;
+    }
+    return props;
 }
-
 
 // Implementar el método changeNotNumbers dentro del prototype de LinkedList que deberá cambiar
 // aquellos valores que no puedan castearse a numeros por 'Kiricocho' y devolver la cantidad de cambios que hizo
@@ -53,9 +60,18 @@ var countProps = function(obj) {
 
 LinkedList.prototype.changeNotNumbers = function(){
     // Tu código aca:
-
+    let counter = 0;
+    let pointer = this.head;
+    while(pointer){
+        let num = Number(pointer.value);
+        if (!num && num !== 0) {
+            pointer.value = 'Kiricocho';
+            counter++;
+        }
+        pointer = pointer.next;
+    }
+    return counter;
 }
-
 
 // Implementar la función mergeQueues que a partir de dos queues recibidas por parametro
 // debe devolver una nueva Queue que vaya mergeando los nodos de las anteriores.
@@ -67,9 +83,26 @@ LinkedList.prototype.changeNotNumbers = function(){
 
 var mergeQueues = function(queueOne, queueTwo) {
     // Tu código aca:
-
+    /* RESUELTO CON ARREGLOS
+    let arrayOne = queueOne.array;
+    let arrayTwo = queueTwo.array;
+    //console.log(`arrayOne: ${arrayOne}, arrayTwo: ${arrayTwo}`);
+    let key = 1;
+    for (let i = 0; i < arrayTwo.length; i++) {
+        arrayOne.splice(key, 0, arrayTwo[i]);
+        key += 2;
+        //console.log(`i: ${i}, arrayOne: ${arrayOne}`);
+    }
+    let newQueue = new Queue;
+    for (let j = 0; j < arrayOne.length; j++) {
+        newQueue.enqueue(arrayOne[j]);
+    }
+    return newQueue;
+    */
+   // let newQueue = new Queue;
+   console.log(`queueOne: ${queueOne.array}, queueTwo: ${queueTwo.array}`);
+   console.log(`dequeueOne: ${queueOne.dequeue()}`);
 }
-
 
 // Implementar la funcion closureMult que permita generar nuevas funciones que representen
 // las tablas de multiplicación de distintos numeros
